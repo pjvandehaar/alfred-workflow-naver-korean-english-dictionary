@@ -1,32 +1,24 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+          
+'''
+PROBLEMS:
+- on <http://m.endic.naver.com/search.nhn?searchOption=all&query=cat>, the title "cat2" comes through from a `<sup>2</sup>`.
+'''
+
 
 from __future__ import print_function
 
-'''
-TODO: add threading for web.get
-
-from threading import Thread
-a = [None, None]
-def fill_pos(idx, val):
-    a[idx] = val
-threads = [Thread(target=fill_pos, args=(i, '{}{}'.format(i,i))) for i in range(2)]
-for thread in threads:
-    thread.start()
-for thread in threads:
-    thread.join()
-'''
-
+import threading
+import traceback
 import unicodedata
 import sys
 import bs4
-import string
 import re
 import workflow
 import workflow.web
 import urllib
 import argparse
-import subprocess
-import os
 import logging
 
 logging.basicConfig(
@@ -39,152 +31,190 @@ assert sys.version_info.major == 2
 DEFINITION_URL_TEMPLATE = 'http://m.endic.naver.com/search.nhn?searchOption=all&query={}'
 SUGGESTION_URL_TEMPLATE = 'http://ac.endic.naver.com/ac?q={}&q_enc=utf-8&st=1100&r_format=json&r_enc=utf-8&r_lt=1000&r_unicode=0&r_escape=1'
 
-def contains_english(s):
-    for letter in string.ascii_letters:
-        if letter in s:
-            return True
-    return False
+def fetch_definition_and_suggestion_page_contents(query):
+    rv = [None, None]
+    urls = list(template.format(query) for template in [DEFINITION_URL_TEMPLATE, SUGGESTION_URL_TEMPLATE])
+    def fetch_url_by_idx(idx):
+        rv[idx] = workflow.web.get(urls[idx])
+        rv[idx].raise_for_status()
 
-def strip_hanja_and_numbers(s):
-    return ''.join(char for char in s if not is_hanja_or_number(char)).strip()
-    
-def is_hanja_or_number(char):
-    unicode_pos = ord(char)
-    if 0x3400 <= unicode_pos < 0xa000:
-        return True
-    if ord('0') <= unicode_pos <= ord('9'):
-        return True
-    return False
+    threads = [threading.Thread(target=fetch_url_by_idx, args=(i,)) for i in range(2)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    return rv
+
+def clean_text(s):
+    for bad_letter in '\n\r\t':
+        s = s.replace(bad_letter, ' ')
+    s = re.sub(r'\s+', ' ', s)
+    return s.strip()
 
 
-def process_item(title, subtext=u'', wf=None, url=None):
-    # title and subtext should be unicode.
-    '''if plaintext, print in brackets.  otherwise, use `wf.add_item`.'''
-    if wf is None:
-        print(u'[{}] [{}]'.format(title, subtext))
+def process_item(title, subtext=u'', url=None, autocomplete=None):
+    '''
+    If plaintext, print.  else, use `wf.add_item`.
+    `title` and `subtext` should be unicode.
+    '''
+
+    if process_item.wf is None:
+        print(u' {:15}      {}'.format(title, subtext).encode('utf-8'))
     else:
-        wf.add_item(title, subtext, 
-            valid=True,
-            uid='{:4}'.format(process_item.cur_id),
-            autocomplete=title,
-            arg=url)
-        process_item.cur_id += 1
-process_item.cur_id = 0
+        kwargs = {}
+        if autocomplete is not None:
+            kwargs['autocomplete'] = autocomplete
+        if url is not None:
+            kwargs['arg'], kwargs['valid'] = url, True
+        elif process_item.default_url is not None:
+            kwargs['arg'], kwargs['valid'] = process_item.default_url, True
+        process_item.wf.add_item(title, subtext, **kwargs)
+process_item.wf = None
+process_item.default_url = None
 
 
-def process_query(query, wf=None):
-    query = unicode(query, encoding='utf-8')
-    
-    query = unicodedata.normalize('NFC', query) # b/c Alfred sends Korean through as Jamo instead of Hangul
-    query = query.encode('utf-8')
-    query = urllib.quote(query)
-    lookup_definitions(query, wf=wf)
-    lookup_suggestions(query, wf=wf)
+def lookup_suggestions(response):
 
-
-def lookup_suggestions(query, wf=None):
-    url = SUGGESTION_URL_TEMPLATE.format(query)
-    r = workflow.web.get(url)
-    r.raise_for_status()
-
-    for idx, item_list in enumerate(r.json()['items']):
+    num_entries = 0
+    for idx, item_list in enumerate(response.json()['items']):
         for item_pair in item_list:
             possible_query, brief_definition = item_pair[0][0], item_pair[1][0]
             url_to_pass = DEFINITION_URL_TEMPLATE.format(urllib.quote(possible_query.encode('utf-8')))
-            process_item('sugg[{}]: '.format(idx) + possible_query, brief_definition, wf=wf, url=url_to_pass)
+            process_item('sugg[{}]: '.format(idx) + possible_query,
+                         brief_definition,
+                         url=url_to_pass,
+                         autocomplete=possible_query)
+            num_entries += 1
+
+    return num_entries
 
 
-def lookup_definitions(query, wf=None):
-    url = DEFINITION_URL_TEMPLATE.format(query)
-    r = workflow.web.get(url)
-    r.raise_for_status()
+def lookup_definitions(response):
 
-    soup = bs4.BeautifulSoup(r.text, 'html.parser')
-    # select the first <ul.li3>, b/c the document has 3: word-idiom, meanings, examples.
+    soup = bs4.BeautifulSoup(response.text, 'html.parser')
 
-    word_idiom_section = soup.select('ul.li3')
-    if len(word_idiom_section) == 0:
-        process_item("no word-idiom section found. soup: ", soup.prettify(), wf=wf, url=url)
-        if wf is not None:
-            wf.send_feedback()
-        return
-    word_idiom_section = word_idiom_section[0]
+    # Hopefully these are exactly the <div>s that we want.
+    divs = soup.select('div#content div.entry_wrap div.section_card div.entry_search_word')
 
-    sections = word_idiom_section.select('li > dl')
-    if len(sections) == 0:
-        process_item("no definition sections found. soup: ", word_idiom_section.prettify(), wf=wf, url=url)
-        if wf is not None:
-            wf.send_feedback()
-        return
+    for div in divs:
 
-    for section in sections:
+        title_text = None
+        definition_texts = []
+        example_texts = []
 
-        # title
-        assert len(section.select('dt')) == 1
-        title_elem = section.select('dt')[0]
-        title = title_elem.text.replace('\n', ' ').strip()
+        title = div.select('a.h_word')
+        if len(title) != 1:
+            raise Exception('no title for {}'.format(repr(title)))
+        else:
+            title = title[0]
+            title_text = clean_text(title.text)
 
-        # webcollections are a naver feature that I don't want.
-        if 'webCollect' in repr(title_elem):
-            process_item(u'#webCollect: {}'.format(title), wf=wf, url=url)
-            continue
+        single_dfn = div.select('p.desc_lst')
+        if len(single_dfn) > 1:
+            raise Exception('multiple single definitions!')
+        elif len(single_dfn) == 1:
+            single_dfn = single_dfn[0]
+            dfn_text = single_dfn.text
+            definition_texts.append(clean_text(dfn_text))
 
-        # naver gives English->Korean results sometimes.
-        # TODO: test our script on english->korean.  Maybe disable this.
-        if contains_english(title):
-            process_item(u'#contains_english: {}'.format(title), wf=wf, url=url)
-            continue
-        title = strip_hanja_and_numbers(title)
-        process_item(u'title: {}'.format(title), wf=wf, url=url)
+        dfns = div.select('ul.desc_lst li')
+        for dfn in dfns:
+            p_descs = dfn.select('p.desc')
+            if len(p_descs) == 0:
+                # must be a web collection
+                dfn_text = dfn.text
+            elif len(p_descs) == 1:
+                dfn_text = p_descs[0].text
+            else:
+                raise Exception('there are {} `p.desc`s in {}'.format(len(p_descs), repr(dfn)))
+            definition_texts.append(clean_text(dfn_text))
 
-        for definition in section.select('dd.tt1 li'):
-            definition = re.sub(r'\s+', ' ', definition.text.strip())
-            process_item(u'dfn: {}'.format(definition), wf=wf, url=url)
+        examples = div.select('div.example_wrap')
+        for example in examples:
+            kor = example.select('p.example_mean')[0].text
 
-        korean_sentence = section.select('dd.te1')
-        if len(korean_sentence) > 1:
-            process_item("MULTIPLE KOREAN SENTENCES FOUND. SECTION SOUP: {}".format(section), wf=wf, url=url)
-            if wf is not None:
-                wf.send_feedback()
-            return
-        elif len(korean_sentence) == 1:
-            korean_sentence = korean_sentence[0].text.replace('\n','').strip()
-        
-            english_sentence = section.select('dd.tk1')
-            if len(english_sentence) != 1:
-                process_item("MULTIPLE ENGLISH SENTENCES FOUND. SECTION SOUP: {}".format(section), wf=wf, url=url)
-                if wf is not None:
-                    wf.send_feedback()
-                return
-            english_sentence = english_sentence[0].text.replace('\n','').rstrip('play').strip()
+            # this is to avoid the pesky "Play" or "발음듣기" at the end of the line.
+            eng_spans = example.select('p.example_stc span.autolink')
+            eng = ' '.join(span.text for span in eng_spans)
 
-            process_item(u'{} = {}'.format(korean_sentence, english_sentence), wf=wf, url=url)
+            example_text = kor  +' = ' + eng
+            example_texts.append(clean_text(example_text))
+            
+        # make some output!
+        if len(example_texts) <=1 and sum(len(dfn_text) for dfn_text in definition_texts) <= 40:
+            # we'll concatenate some definitions together to qualify for a one-liner.
+            definition_texts = [' || '.join(dfn_text for dfn_text in definition_texts)]
+
+        if len(definition_texts) <= 1 and len(example_texts) <= 1:
+            # make a one-liner.
+            d_text = '' if len(definition_texts) ==0 else definition_texts[0]
+            e_text = '' if len(example_texts) ==0 else example_texts[0]
+            process_item(u'{} = {}'.format(title_text, d_text), e_text)
+            
+        else:
+            # print a title line followed by everything else.
+            process_item(u'== {} =='.format(title_text))
+            for definition_text in definition_texts:
+                process_item(u'    ' + definition_text)
+            for example_text in example_texts:
+                process_item(u'    ' + example_text)
+
+
+    return len(divs)
+
+
+def process_query(query):
+    query = unicode(query, encoding='utf-8')    
+    query = unicodedata.normalize('NFC', query) # b/c Alfred sends Korean through as Jamo instead of Hangul
+    query = query.encode('utf-8')
+    query = urllib.quote(query)
+ 
+    process_item.default_url = DEFINITION_URL_TEMPLATE.format(query)
+
+    dfns_response, sugg_response = fetch_definition_and_suggestion_page_contents(query)
+
+    n_dfns = lookup_definitions(dfns_response)
+    n_sugg = lookup_suggestions(sugg_response)
+    if n_dfns + n_sugg == 0:
+        process_item('no results found')
 
 
 def workflow_main(wf):
-    '''
+    '''wrapper around `process_query` for use by alfred, or just printing xml.'''
+    process_item.wf = wf
+
     try:
-        process_query(args.query, wf)
+        process_query(args.query)
     except Exception as exc:
         logging.error('failed main', exc_info=True)
-        raise
-    '''
-    process_query(args.query, wf)
-    if wf is not None:
-        wf.send_feedback()
-    else:
-        logging.error('wf should not be None here.')
+
+        process_item('EXCEPTION OCCURRED', repr(exc.args))
+        tb = traceback.format_exc()
+        for line in tb.split('\n'):
+            process_item('traceback:' + line)
+    wf.send_feedback()
 
 if __name__ == u'__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--plaintext', action='store_true')
-    parser.add_argument('query')
+    parser.add_argument('--test', action='store_true')
+    parser.add_argument('query', nargs='?', default=None)
     args = parser.parse_args()
 
-    if args.plaintext:
+    if not args.test and args.query is None:
+        parser.print_help()
+        exit(1)
+
+    if args.test:
+        tests = ['강', '조언', '뭘 해야 할까요', '그리기에', '집중할', 'cat', 'I am a potato']
+        for test in tests:
+            print('TESTING WITH:', test)
+            process_query(test)
+            print('')
+    elif args.plaintext:
         process_query(args.query)
     else:
         wf = workflow.Workflow()
         log = wf.logger
         sys.exit(wf.run(workflow_main))
-
