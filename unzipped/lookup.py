@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-          
+
 '''
 PROBLEMS:
 - on <http://m.endic.naver.com/search.nhn?searchOption=all&query=cat>, the title "cat2" comes through from a `<sup>2</sup>`.
@@ -22,8 +22,8 @@ import argparse
 import logging
 
 logging.basicConfig(
-    level=logging.DEBUG, 
-    filename='/tmp/alfred-nv.log', 
+    level=logging.DEBUG,
+    filename='/tmp/alfred-nv.log',
     format='%(asctime)s %(message)s')
 
 assert sys.version_info.major == 2
@@ -62,13 +62,18 @@ def process_item(title, subtext=u'', url=None, autocomplete=None):
     if process_item.wf is None:
         print(u' {:15}      {}'.format(title, subtext).encode('utf-8'))
     else:
-        kwargs = {}
-        if autocomplete is not None:
+        kwargs = {'copytext':title}
+
+        if autocomplete is None:
+            kwargs['autocomplete'] = title
+        else:
             kwargs['autocomplete'] = autocomplete
+
         if url is not None:
             kwargs['arg'], kwargs['valid'] = url, True
         elif process_item.default_url is not None:
             kwargs['arg'], kwargs['valid'] = process_item.default_url, True
+
         process_item.wf.add_item(title, subtext, **kwargs)
 process_item.wf = None
 process_item.default_url = None
@@ -140,7 +145,7 @@ def lookup_definitions(response):
 
             example_text = kor  +' = ' + eng
             example_texts.append(clean_text(example_text))
-            
+
         # make some output!
         if len(example_texts) <=1 and sum(len(dfn_text) for dfn_text in definition_texts) <= 40:
             # we'll concatenate some definitions together to qualify for a one-liner.
@@ -151,7 +156,7 @@ def lookup_definitions(response):
             d_text = '' if len(definition_texts) ==0 else definition_texts[0]
             e_text = '' if len(example_texts) ==0 else example_texts[0]
             process_item(u'{} = {}'.format(title_text, d_text), e_text)
-            
+
         else:
             # print a title line followed by everything else.
             process_item(u'== {} =='.format(title_text))
@@ -165,11 +170,11 @@ def lookup_definitions(response):
 
 
 def process_query(query):
-    query = unicode(query, encoding='utf-8')    
+    query = unicode(query, encoding='utf-8')
     query = unicodedata.normalize('NFC', query) # b/c Alfred sends Korean through as Jamo instead of Hangul
     query = query.encode('utf-8')
     query = urllib.quote(query)
- 
+
     process_item.default_url = DEFINITION_URL_TEMPLATE.format(query)
 
     dfns_response, sugg_response = fetch_definition_and_suggestion_page_contents(query)

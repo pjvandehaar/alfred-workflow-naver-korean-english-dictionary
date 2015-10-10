@@ -12,7 +12,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>7B182504-B575-4BA2-A3CB-65F24CBF467E</string>
+				<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -23,7 +23,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>7B182504-B575-4BA2-A3CB-65F24CBF467E</string>
+				<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -63,7 +63,7 @@
 				<key>script</key>
 				<string>/usr/bin/python2.7 lookup.py "{query}"</string>
 				<key>title</key>
-				<string>Naver Korean-&gt;English</string>
+				<string>Search Naver's Korean-English Dictionary</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -89,7 +89,7 @@
 			<key>type</key>
 			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>7B182504-B575-4BA2-A3CB-65F24CBF467E</string>
+			<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -115,7 +115,7 @@
 				<key>script</key>
 				<string>/usr/bin/python2.7 lookup.py "{query}"</string>
 				<key>title</key>
-				<string>Naver Korean-&gt;English</string>
+				<string>Search Naver's Korean-English Dictionary</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -136,12 +136,12 @@
 		<key>6E366D8F-71CE-4904-B711-157B96133876</key>
 		<dict>
 			<key>ypos</key>
-			<real>140</real>
+			<real>100</real>
 		</dict>
-		<key>7B182504-B575-4BA2-A3CB-65F24CBF467E</key>
+		<key>951A9CB4-C168-48CE-9CB1-231530A1E5B4</key>
 		<dict>
 			<key>ypos</key>
-			<real>200</real>
+			<real>190</real>
 		</dict>
 		<key>B1275800-07BD-43B6-A9DB-97D9D600B373</key>
 		<dict>
