@@ -44,6 +44,35 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>action</key>
+				<integer>1</integer>
+				<key>argument</key>
+				<integer>1</integer>
+				<key>argumenttext</key>
+				<string>nr </string>
+				<key>hotkey</key>
+				<integer>17</integer>
+				<key>hotmod</key>
+				<integer>1310720</integer>
+				<key>hotstring</key>
+				<string>T</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>6484F4A2-7C1A-43C0-A4BA-03B31FEEA7A4</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
@@ -133,6 +162,11 @@
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>6484F4A2-7C1A-43C0-A4BA-03B31FEEA7A4</key>
+		<dict>
+			<key>ypos</key>
+			<real>100</real>
+		</dict>
 		<key>6E366D8F-71CE-4904-B711-157B96133876</key>
 		<dict>
 			<key>ypos</key>
