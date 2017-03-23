@@ -46,12 +46,11 @@ def fetch_definition_and_suggestion_page_contents(query):
 
     return rv
 
-def clean_text(s):
+def only_spaces(s):
     for bad_letter in '\n\r\t':
         s = s.replace(bad_letter, ' ')
     s = re.sub(r'\s+', ' ', s)
     return s.strip()
-
 
 def process_item(title, subtext=u'', url=None, autocomplete=None):
     '''
@@ -102,18 +101,24 @@ def lookup_definitions(response):
     # Hopefully these are exactly the <div>s that we want.
     divs = soup.select('div#content div.entry_wrap div.section_card div.entry_search_word')
 
+    # for div in divs:
+    #     print('\n===========\n')
+    #     print(div)
+    # print('\n====#=#=#=#=======\n\n')
+
     for div in divs:
 
         title_text = None
         definition_texts = []
         example_texts = []
 
-        title = div.select('a.h_word')
+        title = div.select('div.h_word')
         if len(title) != 1:
             raise Exception('no title for {}'.format(repr(title)))
         else:
             title = title[0]
-            title_text = clean_text(title.text)
+            title = title.select('strong.target')[0].text.strip()
+            title_text = only_spaces(title)
 
         single_dfn = div.select('p.desc_lst')
         if len(single_dfn) > 1:
@@ -121,7 +126,7 @@ def lookup_definitions(response):
         elif len(single_dfn) == 1:
             single_dfn = single_dfn[0]
             dfn_text = single_dfn.text
-            definition_texts.append(clean_text(dfn_text))
+            definition_texts.append(only_spaces(dfn_text))
 
         dfns = div.select('ul.desc_lst li')
         for dfn in dfns:
@@ -133,7 +138,7 @@ def lookup_definitions(response):
                 dfn_text = p_descs[0].text
             else:
                 raise Exception('there are {} `p.desc`s in {}'.format(len(p_descs), repr(dfn)))
-            definition_texts.append(clean_text(dfn_text))
+            definition_texts.append(only_spaces(dfn_text))
 
         examples = div.select('div.example_wrap')
         for example in examples:
@@ -144,7 +149,7 @@ def lookup_definitions(response):
             eng = ' '.join(span.text for span in eng_spans)
 
             example_text = kor  +' = ' + eng
-            example_texts.append(clean_text(example_text))
+            example_texts.append(only_spaces(example_text))
 
         # make some output!
         if len(example_texts) <=1 and sum(len(dfn_text) for dfn_text in definition_texts) <= 40:
