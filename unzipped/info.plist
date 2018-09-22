@@ -3,44 +3,69 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.pjvandehaar.naver-korean-english-dictionary</string>
-	<key>category</key>
-	<string>Internet</string>
+	<string></string>
 	<key>connections</key>
 	<dict>
-		<key>6E366D8F-71CE-4904-B711-157B96133876</key>
+		<key>0A7F2809-0FA6-4960-88D5-21872CADDCB3</key>
+		<array/>
+		<key>26D7C0FE-A688-4578-AB44-2BF0570C8A43</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
+				<string>A001EC66-63D2-4AB0-8BEE-B01E640F6FD7</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
-		<key>B1275800-07BD-43B6-A9DB-97D9D600B373</key>
+		<key>7EC598F8-4A78-474F-AD2C-1186AB73D629</key>
+		<array/>
+		<key>B009C27C-C67A-4837-8475-8DA22C9EECD9</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
+				<string>A001EC66-63D2-4AB0-8BEE-B01E640F6FD7</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
-	<string>pjvandehaar</string>
+	<string></string>
 	<key>description</key>
 	<string></string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Naver Korean-English dictionary</string>
+	<string>simple scripts</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>A001EC66-63D2-4AB0-8BEE-B01E640F6FD7</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -49,7 +74,11 @@
 				<key>argument</key>
 				<integer>1</integer>
 				<key>argumenttext</key>
-				<string>nr </string>
+				<string>k </string>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
 				<key>hotkey</key>
 				<integer>17</integer>
 				<key>hotmod</key>
@@ -66,71 +95,25 @@
 			<key>type</key>
 			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
-			<string>6484F4A2-7C1A-43C0-A4BA-03B31FEEA7A4</string>
+			<string>163FBDFF-9045-4CFD-9D50-AB95B2C613A9</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>keyword</key>
-				<string>nr</string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>2</integer>
-				<key>runningsubtext</key>
-				<string>Fetching Results...</string>
-				<key>script</key>
-				<string>/usr/bin/python2.7 lookup.py "{query}"</string>
-				<key>title</key>
-				<string>Search Naver's Korean-English Dictionary</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>6E366D8F-71CE-4904-B711-157B96133876</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>plusspaces</key>
+				<key>alfredfiltersresults</key>
 				<false/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>951A9CB4-C168-48CE-9CB1-231530A1E5B4</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>102</integer>
+				<integer>4</integer>
 				<key>keyword</key>
-				<string>ㅜㄱ</string>
+				<string>k</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -140,11 +123,20 @@
 				<key>queuemode</key>
 				<integer>2</integer>
 				<key>runningsubtext</key>
-				<string>Fetching Results...</string>
+				<string></string>
 				<key>script</key>
-				<string>/usr/bin/python2.7 lookup.py "{query}"</string>
+				<string>export PATH="/usr/local/bin:$PATH"
+
+/Users/peter/dotfiles/bin/kor --fmt=xml "{query}"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
-				<string>Search Naver's Korean-English Dictionary</string>
+				<string>...</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -153,37 +145,383 @@
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>B1275800-07BD-43B6-A9DB-97D9D600B373</string>
+			<string>26D7C0FE-A688-4578-AB44-2BF0570C8A43</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>keyword</key>
+				<string>ㅏ</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>2</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>export PATH="/usr/local/bin:$PATH"
+
+/Users/peter/dotfiles/bin/kor --fmt=xml "{query}"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>...</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>B009C27C-C67A-4837-8475-8DA22C9EECD9</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>4</integer>
+				<key>keyword</key>
+				<string>r</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>
+echo '&lt;?xml version="1.0"?&gt;'
+echo '&lt;items&gt;'
+
+/usr/local/bin/Rscript -e "{query}" 2&gt;&amp;1 | while read line; do
+  echo -n '&lt;item&gt;&lt;title&gt;'
+  echo -n "$line" | tr -d '\n'
+  echo -n '&lt;/title&gt;&lt;arg&gt;'
+  echo -n "$line"
+  echo -n '&lt;/arg&gt;&lt;/item&gt;'
+done
+
+echo '&lt;/items&gt;'
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>...</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>0A7F2809-0FA6-4960-88D5-21872CADDCB3</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>py</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>
+echo '&lt;?xml version="1.0"?&gt;'
+echo '&lt;items&gt;'
+
+args="$*"
+
+/usr/local/bin/python3 -c $'import math, os, sys\nview = lambda x: "\\n".join(repr(e) for e in x)\n''x = '"$args"$'\n''print("{:5,.8g}".format(x).replace("e-0", "e-").replace("e+0", "e+") if isinstance(x, (int,float)) else x)' 2&gt;&amp;1 |
+perl -pale 's{&gt;}{&amp;gt;}g;s{&lt;}{&amp;lt;}g' |
+while read line; do
+  echo -n '&lt;item&gt;&lt;title&gt;'
+  echo -n "$line" | tr -d '\n'
+  echo -n '&lt;/title&gt;&lt;arg&gt;'
+  echo -n "$line"
+  echo -n '&lt;/arg&gt;&lt;/item&gt;'
+done
+
+echo '&lt;/items&gt;'
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>...</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>7EC598F8-4A78-474F-AD2C-1186AB73D629</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>sh</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string># Note: autocomplete will be running all sorts of odd partial scripts
+
+PATH="$PATH:$HOME/bin:$HOME/dotfiles/OSX/bin:$HOME/dotfiles/bin:/usr/local/bin"
+source ~/.bashrc
+
+echo '&lt;?xml version="1.0"?&gt;'
+echo '&lt;items&gt;'
+
+args="$*"
+
+/usr/local/bin/bash -c "$args" 2&gt;&amp;1 |
+perl -pale 's{&gt;}{&amp;gt;}g;s{&lt;}{&amp;lt;}g' |
+while read line; do
+  echo -n '&lt;item&gt;&lt;title&gt;'
+  echo -n "$line" | tr -d '\n'
+  echo -n '&lt;/title&gt;&lt;arg&gt;'
+  echo -n "$line"
+  echo -n '&lt;/arg&gt;&lt;/item&gt;'
+done
+
+echo '&lt;/items&gt;'
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>...</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9582B9F1-52F5-418C-B1E6-2FAE824309D7</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>ptrcolor</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string># Note: autocomplete will be running all sorts of odd partial scripts
+
+PATH="$PATH:$HOME/bin:$HOME/dotfiles/OSX/bin:$HOME/dotfiles/bin:/usr/local/bin"
+source ~/.bashrc
+
+echo '&lt;?xml version="1.0"?&gt;'
+echo '&lt;items&gt;'
+
+args="$*"
+
+ptrcolor 2&gt;&amp;1 |
+perl -pale 's{&gt;}{&amp;gt;}g;s{&lt;}{&amp;lt;}g' |
+while read line; do
+  echo -n '&lt;item&gt;&lt;title&gt;'
+  echo -n "$line" | tr -d '\n'
+  echo -n '&lt;/title&gt;&lt;arg&gt;'
+  echo -n "$line"
+  echo -n '&lt;/arg&gt;&lt;/item&gt;'
+done
+
+echo '&lt;/items&gt;'
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>...</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>CC7783DE-3680-47BA-8C29-5764B8671981</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
 	<key>uidata</key>
 	<dict>
-		<key>6484F4A2-7C1A-43C0-A4BA-03B31FEEA7A4</key>
+		<key>0A7F2809-0FA6-4960-88D5-21872CADDCB3</key>
 		<dict>
+			<key>xpos</key>
+			<integer>450</integer>
 			<key>ypos</key>
-			<real>100</real>
+			<integer>230</integer>
 		</dict>
-		<key>6E366D8F-71CE-4904-B711-157B96133876</key>
+		<key>163FBDFF-9045-4CFD-9D50-AB95B2C613A9</key>
 		<dict>
+			<key>xpos</key>
+			<integer>140</integer>
 			<key>ypos</key>
-			<real>100</real>
+			<integer>30</integer>
 		</dict>
-		<key>951A9CB4-C168-48CE-9CB1-231530A1E5B4</key>
+		<key>26D7C0FE-A688-4578-AB44-2BF0570C8A43</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
-			<real>190</real>
+			<integer>30</integer>
 		</dict>
-		<key>B1275800-07BD-43B6-A9DB-97D9D600B373</key>
+		<key>7EC598F8-4A78-474F-AD2C-1186AB73D629</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
-			<real>280</real>
+			<integer>230</integer>
+		</dict>
+		<key>9582B9F1-52F5-418C-B1E6-2FAE824309D7</key>
+		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
+			<key>ypos</key>
+			<integer>360</integer>
+		</dict>
+		<key>A001EC66-63D2-4AB0-8BEE-B01E640F6FD7</key>
+		<dict>
+			<key>xpos</key>
+			<integer>800</integer>
+			<key>ypos</key>
+			<integer>30</integer>
+		</dict>
+		<key>B009C27C-C67A-4837-8475-8DA22C9EECD9</key>
+		<dict>
+			<key>xpos</key>
+			<integer>450</integer>
+			<key>ypos</key>
+			<integer>100</integer>
+		</dict>
+		<key>CC7783DE-3680-47BA-8C29-5764B8671981</key>
+		<dict>
+			<key>xpos</key>
+			<integer>450</integer>
+			<key>ypos</key>
+			<integer>360</integer>
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string>https://github.com/pjvandehaar/alfred-workflow-naver-korean-english-dictionary</string>
+	<string></string>
 </dict>
 </plist>
