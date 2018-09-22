@@ -4,7 +4,7 @@ It tries to intelligently compress the information returned from that site into 
 
 At the bottom of the results are autocomplete suggestions (scroll down!), which may be selected by pressing "tab".  They are either suggested by prefix (in which case they begin with "sugg[0]") or suffix ("sugg[1]")
 
-This workflow may be activated with the keyword "nr", or by selecting any text and pressing "Ctrl-Command-T".  Due to Alfred's awkward internal use of Korean Jamo, you may have to type an extra space after a Korean word.
+This workflow may be activated with the keyword "nr", or by selecting any text and pressing "Ctrl-Command-T".  Due to Alfred's awkward internal use of [Korean Jamo Unicode](https://en.wikipedia.org/wiki/Hangul_Jamo_(Unicode_block)), you may have to type an extra space after a Korean word.
 
 ![Translating cat](cat.png)
 
