@@ -12,3 +12,10 @@ This workflow may be activated with the keyword "nr", or by selecting any text a
 ### Installing
 
 This is simply an Alfred wrapper around <https://github.com/pjvandehaar/dotfiles/blob/master/bin/kor>.  That requires python 3.6+ and `pip3 install beautifulsoup4 lxml`.  Then modify the paths used in this workflow to point to your copy of `kor`.
+
+
+### Alternatives
+
+[Hain](https://github.com/hainproject/hain):
+
+![Hain](hain-screenshot.png)
